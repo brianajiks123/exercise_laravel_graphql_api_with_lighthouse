@@ -9,6 +9,7 @@
         "php": "^8.2",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
+        "mll-lab/graphql-php-scalars": "^6.3",
         "mll-lab/laravel-graphiql": "^3.2",
         "nuwave/lighthouse": "^6.45"
     },
