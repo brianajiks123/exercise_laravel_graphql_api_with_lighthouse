@@ -83,10 +83,15 @@ type Mutation {
     ): User @delete
 
     createEvent(
-        name: String!
-        city: String!
-        date: Date!
-        venue: String!
+        name: String! @rules(apply: ["required", "unique:events,name", "min:3", "max:255"])
+        city: String! @rules(apply: ["max:30"], messages: [
+            {
+                rule: "max"
+                message: "City name should not be more than 30 characters"
+            }
+        ])
+        date: Date! @rules(apply: ["required", "App\\Rules\\FutureDate"])
+        venue: String! @rules(apply: ["required", "lowercase", "not_in:PC"])
         online: Boolean!
     ): Event @create
 
