@@ -35,8 +35,6 @@ type User {
     name: String!
     email: Email!
     email_verified_at: DateTime
-    created_at: DateTime!
-    updated_at: DateTime!
 }
 
 type Event {
@@ -63,4 +61,72 @@ type Speaker {
     event: Event @belongsTo
     created_at: DateTime!
     updated_at: DateTime!
+}
+
+type Mutation {
+    createUser(
+        name: String!
+        email: Email!
+        password: String!
+    ): User @create
+
+    updateUser(
+        id: ID!
+        name: String
+        email: Email
+        email_verified_at: DateTime
+        password: String
+    ): User @update
+
+    deleteUser(
+        id: ID! @whereKey
+    ): User @delete
+
+    createEvent(
+        name: String!
+        city: String!
+        date: Date!
+        venue: String!
+        online: Boolean!
+    ): Event @create
+
+    updateEvent(
+        id: ID!
+        name: String
+        city: String
+        date: Date
+        venue: String
+        online: Boolean
+    ): Event @update
+
+    deleteEvent(
+        id: ID! @whereKey
+    ): Event @delete
+
+    createSpeaker(
+        name: String! @rules(apply: ["required", "unique:speakers,name", "min:3", "max:255"])
+        email: Email! @rules(apply: ["required", "unique:speakers,email", "email"])
+        bio: String! @rules(apply: ["required", "min:3", "max:255"])
+        photo: String
+        linkedin: String
+        city: String! @rules(apply: ["required", "min:3", "max:255", "in:Semarang,Yogyakarta,Surabaya"])
+        country: String!
+        event_id: ID! @rules(apply: ["required", "exists:events,id"])
+    ): Speaker @create
+
+    updateSpeaker(
+        id: ID!
+        name: String
+        email: Email
+        bio: String
+        photo: String
+        linkedin: String
+        city: String
+        country: String
+        event_id: ID
+    ): Speaker @update
+
+    deleteSpeaker(
+        id: ID! @whereKey
+    ): Speaker @delete
 }
